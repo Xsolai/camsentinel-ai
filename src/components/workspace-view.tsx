@@ -1,16 +1,28 @@
 "use client";
 
 import {
-  BellRinging,
+  ArrowsOut,
+  Buildings,
   Camera,
   CheckCircle,
   Clock,
   DownloadSimple,
+  DotsThree,
   Funnel,
+  MagnifyingGlass,
   MapPin,
+  Minus,
+  Pause,
+  Plus,
   Pulse,
   ShieldCheck,
+  SpeakerHigh,
+  SquaresFour,
+  Users,
+  VideoCamera,
   Warning,
+  WarningCircle,
+  X,
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,115 +72,428 @@ const severityClass = (severity: IncidentSeverity) =>
       ? "warning"
       : "success";
 
+const overviewActivity = [
+  [
+    "10:41:58 AM",
+    "Warehouse A - Aisle 12",
+    "Person in restricted zone",
+    "AI Detection",
+    "Critical",
+    "danger",
+    "Camera NW-A-12",
+    "/images/warehouse-aisle-person-camera.png",
+  ],
+  [
+    "10:39:12 AM",
+    "Warehouse B - Loading Dock 3",
+    "Unattended object detected",
+    "AI Detection",
+    "High",
+    "warning",
+    "Camera NW-B-03",
+    "/images/receiving-dock-camera.png",
+  ],
+  [
+    "10:35:47 AM",
+    "Main Entrance - Exterior",
+    "Vehicle entry",
+    "Access Control",
+    "Info",
+    "success",
+    "Camera EXT-01",
+    "/images/parking-perimeter-camera.png",
+  ],
+  [
+    "10:33:05 AM",
+    "Employee Entrance",
+    "Authorized access",
+    "Access Control",
+    "Info",
+    "success",
+    "Access Reader ER-02",
+    "",
+  ],
+  [
+    "10:31:22 AM",
+    "System",
+    "Camera health check",
+    "System",
+    "Info",
+    "success",
+    "—",
+    "",
+  ],
+] as const;
+
 function Overview() {
-  const { incidents } = useMockStore();
+  const [level, setLevel] = useState("1");
+  const [insightOpen, setInsightOpen] = useState(true);
+  const [search, setSearch] = useState("");
+  const [layers, setLayers] = useState({
+    cameras: true,
+    coverage: true,
+    zones: true,
+    incidents: true,
+    traffic: false,
+  });
+  const visibleEvents = overviewActivity.filter((item) =>
+    `${item[1]} ${item[2]} ${item[6]}`
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
+
   return (
-    <>
-      <PageHeading eyebrow="Wednesday, 15 July" title="North Distribution Hub">
-        <div className="toolbar">
-          <button className="btn btn-secondary">
-            <Funnel size={17} /> Last 24 hours
+    <section className="operations-overview">
+      <div className="overview-summary">
+        <div className="facility-summary">
+          <button>
+            Northview Distribution Center <span aria-hidden="true">⌄</span>
           </button>
-          <button className="btn btn-primary">
-            <BellRinging size={17} /> Configure alerts
-          </button>
-        </div>
-      </PageHeading>
-      <div className="stats-grid">
-        <div className="stat-card">
-          <Camera size={20} />
-          <span className="muted" style={{ marginLeft: 8 }}>
-            Cameras online
+          <span>
+            <i />
+            All systems operational
           </span>
-          <strong>24 / 24</strong>
         </div>
-        <div className="stat-card">
-          <Warning size={20} />
-          <span className="muted" style={{ marginLeft: 8 }}>
-            Open incidents
-          </span>
+        <div className="overview-kpis">
+          <div className="overview-kpi">
+            <span className="kpi-icon green">
+              <VideoCamera size={22} />
+            </span>
+            <span>
+              <small>Cameras Online</small>
+              <strong>
+                128 <em>/ 134</em>
+              </strong>
+            </span>
+          </div>
+          <div className="overview-kpi">
+            <span className="kpi-icon red">
+              <WarningCircle size={22} />
+            </span>
+            <span>
+              <small>Active Incidents</small>
+              <strong className="critical-number">2</strong>
+            </span>
+          </div>
+          <div className="overview-kpi">
+            <span className="kpi-icon blue">
+              <SquaresFour size={22} />
+            </span>
+            <span>
+              <small>Areas Monitored</small>
+              <strong>
+                24 <em>/ 28</em>
+              </strong>
+            </span>
+          </div>
+          <div className="overview-kpi">
+            <span className="kpi-icon gray">
+              <Users size={22} />
+            </span>
+            <span>
+              <small>People On-site</small>
+              <strong>42</strong>
+            </span>
+          </div>
+        </div>
+        <div className="site-time">
+          <small>Site Time</small>
           <strong>
-            {incidents.filter((item) => item.status !== "resolved").length}
+            10:42:31 AM <em>PDT</em>
           </strong>
         </div>
-        <div className="stat-card">
-          <Clock size={20} />
-          <span className="muted" style={{ marginLeft: 8 }}>
-            Median response
-          </span>
-          <strong>5m 42s</strong>
-        </div>
       </div>
-      <div className="dashboard-grid">
-        <div className="panel map-card">
-          <Image
-            src="/images/facility-intelligence-map.png"
-            width={1536}
-            height={1024}
-            alt="Spatial AI monitoring map for North Distribution Hub"
-            priority
-          />
-          <div className="map-overlay">
-            <span>
-              <strong>Live facility map</strong>
-              <small
-                className="muted"
-                style={{ display: "block", marginTop: 4 }}
+
+      <div
+        className={`overview-workspace ${insightOpen ? "" : "insight-collapsed"}`}
+      >
+        <aside className="map-controls" aria-label="Map controls">
+          <div className="levels-control">
+            <strong>Levels</strong>
+            {["3", "2", "1", "G"].map((item) => (
+              <button
+                key={item}
+                className={level === item ? "active" : ""}
+                onClick={() => setLevel(item)}
+                aria-pressed={level === item}
               >
-                7 active zones · 98.4% health
-              </small>
-            </span>
-            <span className="status success">Live</span>
-          </div>
-        </div>
-        <aside className="panel">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: 16,
-            }}
-          >
-            <strong>Priority incidents</strong>
-            <Link
-              href="/app/incidents"
-              className="muted"
-              style={{ fontSize: 13 }}
-            >
-              View all
-            </Link>
-          </div>
-          <div className="incident-list">
-            {incidents.map((incident) => (
-              <Link
-                href="/app/incidents"
-                className="incident-item"
-                key={incident.id}
-              >
-                <Image
-                  src={incident.image}
-                  width={180}
-                  height={112}
-                  alt=""
-                  loading="eager"
-                />
-                <span>
-                  <span
-                    className={`status ${severityClass(incident.severity)}`}
-                  >
-                    {incident.severity}
-                  </span>
-                  <h3>{incident.title}</h3>
-                  <small className="muted">
-                    {incident.zone} · {incident.time}
-                  </small>
-                </span>
-              </Link>
+                {item}
+              </button>
             ))}
           </div>
+          <div className="layers-control">
+            <strong>Layers</strong>
+            {(
+              [
+                ["cameras", "Cameras"],
+                ["coverage", "Coverage"],
+                ["zones", "Zones"],
+                ["incidents", "Incidents"],
+                ["traffic", "Traffic Flow"],
+              ] as const
+            ).map(([key, label]) => (
+              <label key={key}>
+                <input
+                  type="checkbox"
+                  checked={layers[key]}
+                  onChange={(event) =>
+                    setLayers({ ...layers, [key]: event.target.checked })
+                  }
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+          <div className="zoom-control">
+            <button aria-label="Zoom in">
+              <Plus size={17} />
+            </button>
+            <button aria-label="Zoom out">
+              <Minus size={17} />
+            </button>
+            <button aria-label="Fit map">
+              <ArrowsOut size={16} />
+            </button>
+          </div>
         </aside>
+
+        <section
+          className="facility-map-panel"
+          aria-label={`Facility map level ${level}`}
+        >
+          <div className="facility-map-frame">
+            <Image
+              src="/images/warehouse-floorplan.png"
+              alt="Level one warehouse floorplan with AI camera coverage"
+              width={1680}
+              height={945}
+              priority
+            />
+            {layers.cameras && (
+              <div className="map-markers" aria-label="Camera positions">
+                {[
+                  ["18%", "22%"],
+                  ["47%", "14%"],
+                  ["89%", "22%"],
+                  ["38%", "47%"],
+                  ["74%", "47%"],
+                  ["40%", "73%"],
+                  ["35%", "91%"],
+                ].map(([left, top], index) => (
+                  <button
+                    key={`${left}-${top}`}
+                    style={{ left, top }}
+                    aria-label={`Open camera ${index + 1}`}
+                  >
+                    <VideoCamera size={16} weight="fill" />
+                  </button>
+                ))}
+              </div>
+            )}
+            {layers.incidents && (
+              <>
+                <Link
+                  href="/app/incidents"
+                  className="map-incident critical"
+                  style={{ left: "52%", top: "42%" }}
+                  aria-label="Open critical incident"
+                >
+                  <WarningCircle size={24} weight="fill" />
+                </Link>
+                <Link
+                  href="/app/incidents"
+                  className="map-incident high"
+                  style={{ left: "52%", top: "68%" }}
+                  aria-label="Open high priority incident"
+                >
+                  <Warning size={22} weight="fill" />
+                </Link>
+              </>
+            )}
+            <span
+              className="current-position"
+              aria-label="Current responder position"
+            />
+          </div>
+          <div className="map-legend">
+            <span>
+              <VideoCamera size={14} weight="fill" />
+              Camera
+            </span>
+            <span>
+              <i className="coverage-key" />
+              Coverage
+            </span>
+            <span>
+              <i className="perimeter-key" />
+              Site Perimeter
+            </span>
+            <span className="legend-critical">
+              <WarningCircle size={14} weight="fill" />
+              Critical
+            </span>
+            <span className="legend-high">
+              <Warning size={14} weight="fill" />
+              High
+            </span>
+          </div>
+        </section>
+
+        {insightOpen ? (
+          <aside className="live-insight-panel">
+            <div className="live-insight-title">
+              <strong>WAREHOUSE A - AISLE 12</strong>
+              <span className="status success">● Live</span>
+              <button
+                onClick={() => setInsightOpen(false)}
+                aria-label="Close camera insight"
+              >
+                <X size={19} />
+              </button>
+            </div>
+            <div className="live-camera-feed">
+              <Image
+                src="/images/warehouse-aisle-person-camera.png"
+                alt="Synthetic live CCTV view of Warehouse A aisle 12"
+                width={720}
+                height={440}
+                loading="eager"
+                style={{ width: "100%", height: "var(--live-feed-height)" }}
+              />
+              <div className="detection-box">
+                <span>Person</span>
+              </div>
+              <div className="video-controls">
+                <span>
+                  <Pause size={18} weight="fill" />
+                  <SpeakerHigh size={18} />
+                </span>
+                <span>
+                  <Camera size={18} />
+                  <span className="hd-badge">HD</span>
+                  <ArrowsOut size={18} />
+                </span>
+              </div>
+            </div>
+            <div className="ai-insight-body">
+              <div className="insight-heading">
+                <strong>AI Insights</strong>
+                <small>Today 10:41:58 AM</small>
+              </div>
+              <div className="insight-alert">
+                <strong>Person detected in restricted zone</strong>
+                <span>
+                  Confidence: 92% <em>● Critical</em>
+                </span>
+              </div>
+              <div className="insight-metrics">
+                <span>
+                  <small>Zone</small>
+                  <strong>Warehouse A - Aisle 12</strong>
+                </span>
+                <span>
+                  <small>Duration</small>
+                  <strong>00:00:07</strong>
+                </span>
+                <span>
+                  <small>Last seen</small>
+                  <strong>10:41:58 AM</strong>
+                </span>
+              </div>
+              <Link href="/app/incidents">
+                View related history <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </aside>
+        ) : (
+          <button
+            className="reopen-insight"
+            onClick={() => setInsightOpen(true)}
+          >
+            Open live insight
+          </button>
+        )}
       </div>
-    </>
+
+      <section className="activity-stream">
+        <header>
+          <div>
+            <h2>Activity Stream</h2>
+            <button>
+              <Funnel size={16} />
+              Filters
+            </button>
+          </div>
+          <div className="activity-actions">
+            <label>
+              <MagnifyingGlass size={17} />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search events..."
+              />
+            </label>
+            <Link href="/app/incidents">Open incident workspace</Link>
+          </div>
+        </header>
+        <div className="activity-table-wrap">
+          <table className="activity-table">
+            <tbody>
+              {visibleEvents.map((item, index) => (
+                <tr key={`${item[0]}-${item[6]}`}>
+                  <td>
+                    <span className={`event-icon ${item[5]}`}>
+                      {index === 0 ? (
+                        <WarningCircle size={18} weight="fill" />
+                      ) : index === 1 ? (
+                        <Warning size={18} weight="fill" />
+                      ) : index === 2 ? (
+                        <Users size={18} />
+                      ) : (
+                        <CheckCircle size={18} weight="fill" />
+                      )}
+                    </span>
+                  </td>
+                  <td>{item[0]}</td>
+                  <td>{item[1]}</td>
+                  <td>{item[2]}</td>
+                  <td>{item[3]}</td>
+                  <td>
+                    <span className={`event-severity ${item[5]}`}>
+                      ● {item[4]}
+                    </span>
+                  </td>
+                  <td>
+                    {item[7] ? (
+                      <Image
+                        src={item[7]}
+                        width={52}
+                        height={30}
+                        alt=""
+                        loading="eager"
+                      />
+                    ) : (
+                      <span className="device-placeholder">
+                        <Buildings size={15} />
+                      </span>
+                    )}
+                  </td>
+                  <td>{item[6]}</td>
+                  <td>
+                    <button aria-label={`More options for ${item[2]}`}>
+                      <DotsThree size={20} weight="bold" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <Link className="view-all-events" href="/app/incidents">
+          View all events <span aria-hidden="true">↓</span>
+        </Link>
+      </section>
+    </section>
   );
 }
 
@@ -602,5 +927,11 @@ export function WorkspaceView({
     sites: <Sites />,
     settings: <Settings />,
   };
-  return <main className="app-content">{content[section]}</main>;
+  return (
+    <main
+      className={`app-content ${section === "overview" ? "overview-content" : ""}`}
+    >
+      {content[section]}
+    </main>
+  );
 }

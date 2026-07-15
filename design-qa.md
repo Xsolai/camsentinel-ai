@@ -58,4 +58,30 @@ The approved light spatial-intelligence direction is consistently represented ac
 - Next.js production build: passed; 19 static/SSG pages generated
 - Dependency audit: 0 vulnerabilities
 
+## Approved overview dashboard v2
+
+- Source: `docs/design-references/overview-dashboard-approved-v2.png`
+- Final desktop capture: `docs/qa/overview-approved-final.png`
+- Final mobile viewport capture: `docs/qa/overview-approved-mobile-viewport.png`
+- Full comparison: `docs/qa/overview-approved-comparison-final.jpg`
+- Focused comparison: `docs/qa/overview-approved-focused-final.jpg`
+- Desktop state: `/app/overview`, 1488x1059, level 1, cameras/coverage/zones/incidents enabled, live insight open.
+
+### Comparison passes
+
+- Pass 1, P2 image fidelity: the initial camera still used a forklift scene while the approved panel showed a person detection. Replaced it with a purpose-generated warehouse aisle still containing one detected person and a matching surveillance crop.
+- Pass 1, P2 mobile responsiveness: the workspace navigation and map controls exposed visible horizontal scrollbars at 390px. Retained touch scrolling and hid the scrollbar chrome.
+- Pass 2, P3 asset variance: the synthetic warehouse floorplan differs in room geometry from the reference but preserves the approved spatial-intelligence composition, camera coverage, incidents, response position, palette, density, and panel hierarchy. No backend or copied operational asset was used.
+- Post-fix desktop and focused comparison boards were reviewed for layout, spacing, typography, colors, imagery, icons, borders, interaction states, and visual density. No remaining P0-P2 differences.
+
+### Interaction and responsive verification
+
+- Level selection updates the pressed state.
+- Camera layer toggling removes and restores all seven map markers.
+- Live insight closes and reopens.
+- Activity search filters five rows to the matching vehicle event.
+- Incident workspace navigation routes to `/app/incidents` and back.
+- 1488px, 1024px, 768px, and 390px widths have no page-level horizontal overflow or hidden primary actions.
+- Fresh browser verification reported zero console warnings and zero console errors.
+
 final result: passed

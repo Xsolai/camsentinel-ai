@@ -1,19 +1,72 @@
 "use client";
 
-import { Bell, Buildings, ChartLineUp, Gear, ShieldWarning, SquaresFour } from "@phosphor-icons/react";
+import { Bell, CalendarBlank, CaretDown } from "@phosphor-icons/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Brand } from "./brand";
 
 const navigation = [
-  { href: "/app/overview", label: "Overview", icon: SquaresFour },
-  { href: "/app/incidents", label: "Incidents", icon: ShieldWarning },
-  { href: "/app/analytics", label: "Analytics", icon: ChartLineUp },
-  { href: "/app/sites", label: "Sites & cameras", icon: Buildings },
-  { href: "/app/settings", label: "Settings", icon: Gear },
+  { href: "/app/overview", label: "Overview" },
+  { href: "/app/sites", label: "Live Cameras" },
+  { href: "/app/incidents", label: "Incidents" },
+  { href: "/app/analytics", label: "Analytics" },
+  { href: "/app/sites", label: "Sites" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  return <div className="app-shell"><aside className="app-sidebar"><Brand href="/app/overview" /> <nav className="app-nav" aria-label="Workspace navigation">{navigation.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className={pathname === href || pathname.startsWith(`${href}/`) ? "active" : ""}><Icon size={20} /><span>{label}</span></Link>)}</nav><div className="sidebar-foot"><strong style={{ color: "white" }}>North Distribution Hub</strong><span style={{ display: "block", marginTop: 6 }}>24 cameras · Demo data</span></div></aside><div className="app-main"><header className="app-topbar"><div><span className="eyebrow">Facility intelligence</span></div><div className="toolbar"><button className="icon-btn" aria-label="Notifications"><Bell size={19} /></button><span className="status success">All systems operational</span></div></header>{children}</div></div>;
+
+  return (
+    <div className="app-shell app-shell-topnav">
+      <header className="workspace-header">
+        <div className="workspace-brand">
+          <Brand href="/app/overview" />
+          <span>AI Video Intelligence Platform</span>
+        </div>
+
+        <nav className="workspace-nav" aria-label="Workspace navigation">
+          {navigation.map(({ href, label }) => {
+            const active =
+              pathname === href ||
+              (label !== "Live Cameras" && pathname.startsWith(`${href}/`));
+            return (
+              <Link key={label} href={href} className={active ? "active" : ""}>
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="workspace-tools">
+          <div className="workspace-date">
+            <CalendarBlank size={21} />
+            <span>
+              <strong>Jul 15, 2026</strong>
+              <small>Tue 10:42 AM</small>
+            </span>
+          </div>
+          <button className="workspace-alert" aria-label="Notifications">
+            <Bell size={22} />
+            <span>3</span>
+          </button>
+          <button className="workspace-profile" aria-label="Open profile menu">
+            <Image
+              src="/images/taylor-morgan-avatar.png"
+              alt="Taylor Morgan, Security Manager"
+              width={42}
+              height={42}
+              priority
+            />
+            <span>
+              <strong>Taylor Morgan</strong>
+              <small>Security Manager</small>
+            </span>
+            <CaretDown size={14} />
+          </button>
+        </div>
+      </header>
+      <div className="app-main">{children}</div>
+    </div>
+  );
 }
