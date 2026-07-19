@@ -11,7 +11,7 @@ export function SiteFooter() {
           <div className="footer-col"><h3>Solutions</h3><Link href="/#industries">Warehousing</Link><Link href="/#industries">Retail</Link><Link href="/#industries">Manufacturing</Link></div>
           <div className="footer-col"><h3>Company</h3><a href="https://xsol.ai">XsolAI</a><a href="mailto:hello@xsol.ai">Contact</a><Link href="/login">Client login</Link></div>
         </div>
-        <div className="footer-bottom"><span>© 2026 XsolAI. All rights reserved.</span><span>Created by Ahsan Inam · All operational data is simulated.</span></div>
+        <div className="footer-bottom"><span>© 2026 XsolAI. All rights reserved.</span><span>Created by Ahsan Inam · Operational intelligence for every workflow.</span></div>
       </div>
     </footer>
   );

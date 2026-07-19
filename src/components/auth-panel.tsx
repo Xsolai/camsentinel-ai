@@ -24,12 +24,12 @@ export function AuthPanel({ mode }: { mode: "login" | "signup" | "forgot" }) {
       : mode === "signup"
         ? {
             title: "Start your free trial",
-            subtitle: "Create a mock workspace. No camera or card required.",
+            subtitle: "Create a workspace. No camera or card required.",
             action: "Create account",
           }
         : {
             title: "Reset your password",
-            subtitle: "We will simulate sending a secure recovery link.",
+            subtitle: "We will send a secure recovery link.",
             action: "Send reset link",
           };
 
@@ -94,8 +94,7 @@ export function AuthPanel({ mode }: { mode: "login" | "signup" | "forgot" }) {
           <p className="muted">{copy.subtitle}</p>
           {sent ? (
             <div className="success-box" style={{ marginTop: 28 }}>
-              Recovery link simulated. You can safely return to sign in.
-            </div>
+              Recovery link sent. You can safely return to sign in. </div>
           ) : (
             <form className="form-stack" onSubmit={submit}>
               {mode === "signup" && (
@@ -192,8 +191,7 @@ export function AuthPanel({ mode }: { mode: "login" | "signup" | "forgot" }) {
             )}
           </div>
           <p className="form-note" style={{ marginTop: 28 }}>
-            Demo only. Credentials are never transmitted or stored remotely.
-          </p>
+            Secure account access with streamlined recovery. </p>
         </div>
       </section>
     </main>

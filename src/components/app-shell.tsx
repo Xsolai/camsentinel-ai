@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span>AI Video Intelligence Platform</span>
         </div>
 
-        <nav className="workspace-nav" aria-label="Workspace navigation">
+        <nav className="workspace-nav" aria-label="workspace navigation">
           {navigation.map(({ href, label }) => {
             const active =
               pathname === href ||

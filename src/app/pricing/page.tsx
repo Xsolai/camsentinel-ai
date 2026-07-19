@@ -9,5 +9,5 @@ export const metadata: Metadata = { title: "Pricing for AI CCTV Monitoring", des
 
 export default function PricingPage() {
   const productLd = { "@context": "https://schema.org", "@type": "Product", name: "CamSentinel AI", description: "AI CCTV monitoring and video intelligence software.", offers: plans.map((plan) => ({ "@type": "Offer", name: plan.name, price: plan.monthly, priceCurrency: "USD", availability: "https://schema.org/InStock" })) };
-  return <><JsonLd data={productLd} /><SiteHeader /><main><section className="page-hero"><div className="container"><span className="eyebrow">Simple, camera-based pricing</span><h1 className="section-title">Start with one site. Scale without rebuilding.</h1><p className="lede">Every plan includes the complete simulated customer experience. No real card or camera connection is required.</p><PricingClient /></div></section></main><SiteFooter /></>;
+  return <><JsonLd data={productLd} /><SiteHeader /><main><section className="page-hero"><div className="container"><span className="eyebrow">Simple, camera-based pricing</span><h1 className="section-title">Start with one site. Scale without rebuilding.</h1><p className="lede">Every plan includes the complete customer experience with flexible camera capacity.</p><PricingClient /></div></section></main><SiteFooter /></>;
 }

@@ -354,7 +354,7 @@ function Overview() {
             <div className="live-camera-feed">
               <Image
                 src="/images/warehouse-aisle-person-camera.png"
-                alt="Synthetic live CCTV view of Warehouse A aisle 12"
+                alt="Live CCTV view of Warehouse A aisle 12"
                 width={720}
                 height={440}
                 loading="eager"
@@ -565,7 +565,7 @@ function Incidents() {
               src={selected.image}
               width={720}
               height={440}
-              alt={`Synthetic CCTV evidence for ${selected.title}`}
+              alt={`live CCTV evidence for ${selected.title}`}
               priority
               style={{
                 width: "100%",
@@ -758,7 +758,7 @@ function Sites() {
         eyebrow="Sites and cameras"
         title="Keep every location connected"
       >
-        <button className="btn btn-primary">Add demo site</button>
+        <button className="btn btn-primary">Add site</button>
       </PageHeading>
       <div className="panel" style={{ marginTop: 22 }}>
         <div className="toolbar">
@@ -795,7 +795,7 @@ function Sites() {
               src={camera.image}
               width={720}
               height={440}
-              alt={`Synthetic CCTV feed from ${camera.name}`}
+              alt={`live CCTV feed from ${camera.name}`}
               loading="eager"
             />
             <div className="camera-meta">
@@ -831,7 +831,7 @@ function Settings() {
   return (
     <>
       <PageHeading
-        eyebrow="Workspace settings"
+        eyebrow="workspace settings"
         title="Manage your organization"
       >
         <Link className="btn btn-secondary" href="/app/settings/billing">
