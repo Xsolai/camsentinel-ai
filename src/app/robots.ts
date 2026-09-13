@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const site = "https://camsentinel-ai.vercel.app";
+const site = "https://camsentinel.xsol.ai";
 
 export default function robots(): MetadataRoute.Robots {
   return {

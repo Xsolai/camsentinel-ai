@@ -1,4 +1,4 @@
-const site = "https://camsentinel-ai.vercel.app";
+const site = "https://camsentinel.xsol.ai";
 const company = "https://xsolai.com";
 
 export const organizationJsonLd = {
