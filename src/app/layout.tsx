@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MockStoreProvider } from "@/components/mock-store";
 
+const site = "https://camsentinel-ai.vercel.app";
+const company = "https://xsolai.com";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://camsentinel.ai"),
+  metadataBase: new URL(site),
   title: {
     default: "CamSentinel AI | AI CCTV Monitoring Software",
     template: "%s | CamSentinel AI",
@@ -22,7 +25,7 @@ export const metadata: Metadata = {
   description:
     "Turn existing security cameras into searchable, real-time operational intelligence with CamSentinel AI, an AI CCTV monitoring platform by XsolAI.",
   applicationName: "CamSentinel AI",
-  authors: [{ name: "Ahsan Inam", url: "https://xsol.ai" }],
+  authors: [{ name: "Ahsan Inam", url: company }],
   creator: "Ahsan Inam",
   publisher: "XsolAI",
   keywords: [
@@ -36,12 +39,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://camsentinel.ai",
+    url: site,
     siteName: "CamSentinel AI",
     title: "CamSentinel AI — AI CCTV Monitoring Software",
-    description:
-      "Transform existing cameras into a live facility intelligence layer.",
-    images: [{ url: "/images/facility-intelligence-map.png", width: 1536, height: 1024 }],
+    description: "Transform existing cameras into a live facility intelligence layer.",
+    images: [
+      {
+        url: "/images/facility-intelligence-map.png",
+        width: 1536,
+        height: 1024,
+        alt: "CamSentinel AI facility intelligence dashboard",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -49,6 +58,7 @@ export const metadata: Metadata = {
     description: "Real-time operational intelligence from the cameras you already own.",
     images: ["/images/facility-intelligence-map.png"],
   },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -62,7 +72,9 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body><MockStoreProvider>{children}</MockStoreProvider></body>
+      <body>
+        <MockStoreProvider>{children}</MockStoreProvider>
+      </body>
     </html>
   );
 }
