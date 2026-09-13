@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MockStoreProvider } from "@/components/mock-store";
 
-const site = "https://camsentinel-ai.vercel.app";
+const site = "https://camsentinel.xsol.ai";
 const company = "https://xsolai.com";
 
 const geistSans = Geist({
